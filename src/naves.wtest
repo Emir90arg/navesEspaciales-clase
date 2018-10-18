@@ -1,0 +1,51 @@
+import naves.*
+
+describe "naves" {
+
+	const np1 = new NaveDePasajeros(cantidadPasajeros = 200, combustible = 10000)
+	const nc1 = new NaveDeCombate(combustible = 10000)
+	const nb1 = new NaveBaliza(colorDeBaliza = "naranja", combustible = 10000)
+	const nh1 = new NaveHospital(cantidadPasajeros = 200, combustible = 10000, quirofanosPreparados = false)
+	 
+	fixture {
+		np1.cargarComida(5000)
+		np1.cargarBebida(5000)
+		np1.velocidad(12000)
+		nh1.cargarComida(5000)
+		nh1.cargarBebida(5000)
+		nh1.velocidad(12000)
+	}
+	
+	test "preparar" {
+		np1.prepararViaje()
+		assert.equals(40000, np1.combustible())
+		assert.equals(5800, np1.racionesComida())
+	}
+	
+	test "recibir amenaza nave de pasajeros" {
+		np1.recibirAmenaza()
+		assert.equals(24000, np1.velocidad())
+		assert.equals(4800, np1.racionesComida())
+		assert.equals(4600, np1.racionesBebida())
+	}
+
+	test "recibir amenaza nave hospital" {
+		nh1.recibirAmenaza()
+		assert.equals(24000, nh1.velocidad())
+		assert.equals(4800, nh1.racionesComida())
+		assert.equals(4600, nh1.racionesBebida())
+		assert.that(nh1.quirofanosPreparados())
+	}
+	
+	test "recibir amenaza nave baliza" {
+		nb1.recibirAmenaza()
+		assert.equals(10, nb1.direccion())
+		assert.equals("rojo", nb1.colorDeBaliza())
+	}
+	
+	test "recibir amenaza nave de combate" {
+		nc1.recibirAmenaza()
+		assert.equals(2, nc1.direccion())
+		assert.that(nc1.emitioMensaje("Amenaza recibida"))
+	}
+}
