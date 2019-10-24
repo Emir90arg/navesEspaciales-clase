@@ -26,8 +26,53 @@ class NaveEspacial {
 		self.avisar()
 	}
 	
-	method escapar()
+	method escapar() {
+		self.descargarCombustible(1)		
+	}
+	
 	method avisar()
+}
+
+class NaveDeCombate inherits NaveEspacial {
+	var property estaInvisible = false
+	var property misilesDesplegados = false
+	const property mensajesEmitidos = []
+	
+	method ponerseVisible() { estaInvisible = false }
+	method ponerseInvisible() { estaInvisible = true }
+	method desplegarMisiles() { misilesDesplegados = true }
+	method replegarMisiles() { misilesDesplegados = false }
+	method emitirMensaje(mensaje) { mensajesEmitidos.add(mensaje) }
+	method emitioMensaje(mensaje) { return mensajesEmitidos.contains(mensaje) }
+	
+	override method prepararViaje() {
+		super()
+		self.ponerseVisible()
+		self.replegarMisiles()
+		self.acelerar(15000)
+		self.emitirMensaje("Saliendo en misión")
+	}
+	
+	override method escapar() {
+		super()
+		self.acercarseUnPocoAlSol()
+		self.acercarseUnPocoAlSol()
+		// el "for" de Wollok		
+//		new Range(1,40).forEach { n => self.acercarseUnPocoAlSol() }
+	}
+	
+	override method avisar() {
+		self.emitirMensaje("Amenaza recibida")
+	}
+
+}
+
+class NaveDeCombateSigilosa inherits NaveDeCombate {
+	override method escapar() {
+		super()
+		self.desplegarMisiles()
+		self.ponerseInvisible()
+	}
 }
 
 class NaveBaliza inherits NaveEspacial {
@@ -78,46 +123,11 @@ class NaveDePasajeros inherits NaveEspacial {
 		self.descargarComida(cantidadPasajeros)
 	}
 
-	override method recibirAmenaza() {
-		super()
-		self.desacelerar(200)
-	}
+//	override method recibirAmenaza() {
+//		super()
+//		self.desacelerar(200)
+//	}
 } 
-
-
-class NaveDeCombate inherits NaveEspacial {
-	var property estaInvisible = false
-	var property misilesDesplegados = false
-	const property mensajesEmitidos = []
-	
-	method ponerseVisible() { estaInvisible = false }
-	method ponerseInvisible() { estaInvisible = true }
-	method desplegarMisiles() { misilesDesplegados = true }
-	method replegarMisiles() { misilesDesplegados = false }
-	method emitirMensaje(mensaje) { mensajesEmitidos.add(mensaje) }
-	method emitioMensaje(mensaje) { return mensajesEmitidos.contains(mensaje) }
-	
-	override method prepararViaje() {
-		super()
-		self.ponerseVisible()
-		self.replegarMisiles()
-		self.acelerar(15000)
-		self.emitirMensaje("Saliendo en misión")
-	}
-	
-	override method escapar() {
-		self.acercarseUnPocoAlSol()
-		self.acercarseUnPocoAlSol()
-		// el "for" de Wollok		
-//		new Range(1,40).forEach { n => self.acercarseUnPocoAlSol() }
-	}
-	
-	override method avisar() {
-		self.emitirMensaje("Amenaza recibida")
-	}
-
-}
-
 
 class NaveHospital inherits NaveDePasajeros {
 	var property quirofanosPreparados
@@ -132,3 +142,4 @@ class NaveHospital inherits NaveDePasajeros {
 		self.desacelerar(500)
 	}
 }
+

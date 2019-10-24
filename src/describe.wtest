@@ -1,0 +1,11 @@
+import naves.*
+
+describe "group of tests" {
+
+	const shh = new NaveDeCombateSigilosa()
+	 
+	test "testX" {
+		shh.recibirAmenaza()
+		
+	}
+}
