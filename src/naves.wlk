@@ -143,3 +143,4 @@ class NaveHospital inherits NaveDePasajeros {
 	}
 }
 
+/*sdasdasd */
